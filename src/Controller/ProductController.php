@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ProductController
+class ProductController extends AbstractController
 {
     /**
      * @Route("/products", name="product.index")
@@ -13,6 +14,8 @@ class ProductController
      */
     public function index(): Response
     {
-        return new Response("les produits");
+        return $this->render('product/index.html.twig', [
+            'current_menu' => 'products'
+        ]);
     }
 }
