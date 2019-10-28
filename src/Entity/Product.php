@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\Date;
+use Cocur\Slugify\Slugify;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
- */
+    /**
+     * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+     */
 class Product
 {
     /**
@@ -93,5 +93,10 @@ class Product
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    public function getSlug(): string
+    {
+        return (new Slugify())->slugify($this->title);
     }
 }

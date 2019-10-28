@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,28 @@ class ProductController extends AbstractController
        dump($products);
 
         return $this->render('product/index.html.twig', [
+            'current_menu' => 'products'
+        ]);
+    }
+
+    /**
+     * @Route("/products/{slug}-{id}", name="product.show", requirements={"slug": "[a-z0-9\-]*"})
+     * @param Product $product
+     * @param ProductRepository $repository
+     * @return Response
+     */
+    public function show(Product $product, string $slug, ProductRepository $repository): Response
+    {
+        if ($product->getSlug() !== $slug)
+        {
+            return $this->redirectToRoute('product.show', [
+                'id' => $product->getId(),
+                'slug' => $product->getSlug()
+            ], 301);
+        }
+
+        return $this->render('product/show.html.twig', [
+            'product' => $product,
             'current_menu' => 'products'
         ]);
     }
