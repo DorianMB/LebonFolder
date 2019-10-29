@@ -9,24 +9,40 @@
             Gérer les biens
         </h2>
 
-        <table class="table-striped">
-            <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for product in products %}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td>{{ product.title }}</td>
-                    <td>
-                        <a href="{{ path('admin.product.edit', {id: product.id}) }}" class="btn btn-secondary">Editer</a>
-                    </td>
+                    <th>Titre</th>
+                    <th>Prix</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.title }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>
+                            <a href="{{ path('admin.product.edit', {id: product.id}) }}" class="btn btn-secondary">Editer</a>
+                            <form action="{{ path('admin.product.delete', {id: product.id}) }}"
+                                  method="post" style="display: inline-block;" onsubmit="return confirm('Etes-vous sur ?')">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete'~product.id) }}">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 {% endblock %}
