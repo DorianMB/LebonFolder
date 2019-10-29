@@ -27,10 +27,10 @@ class ProductController extends AbstractController
         $em->flush();*/
 
        $products = $repository->findAll();
-       dump($products);
 
         return $this->render('product/index.html.twig', [
-            'current_menu' => 'products'
+            'current_menu' => 'products',
+            'products' => $products
         ]);
     }
 
@@ -53,6 +53,21 @@ class ProductController extends AbstractController
         return $this->render('product/show.html.twig', [
             'product' => $product,
             'current_menu' => 'products'
+        ]);
+    }
+
+    /**
+     * @Route("/shop", name="product.shop")
+     * @param ProductRepository $repository
+     * @return Response
+     */
+    public function shop(ProductRepository $repository)
+    {
+        $products = $repository->orderByPrice();
+
+        return $this->render('product/shop.html.twig', [
+            'current_menu' => 'shop',
+            'products' => $products
         ]);
     }
 }
